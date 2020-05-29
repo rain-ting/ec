@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.newer.deal.entiry.User;
+import com.newer.deal.repository.UserMapper;
 import com.newer.deal.service.UserService;
 
 @RestController
@@ -42,6 +43,13 @@ public class UserController {
 	@PutMapping("/{id}")
 	public User update(@PathVariable int id, @RequestBody User user) {
 		return userService.perfect(id, user);
+	}
+	
+	// 验证资金密码
+	@PostMapping("/money/")
+	public Integer checkmoneypwd(@RequestBody User user) {
+		
+		return userService.checkMoneyPwd(user);
 	}
 	
 	/**

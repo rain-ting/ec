@@ -32,6 +32,7 @@ public class LegalcurrencyController {
 	 * @param id
 	 * @return
 	 */
+	
 	@GetMapping("/{id}")
 	public List<Legalcurrency> a(@PathVariable int id) {
 		return mapper.loadByUserId(id);

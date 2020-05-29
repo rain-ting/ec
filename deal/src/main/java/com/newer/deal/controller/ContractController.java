@@ -3,6 +3,7 @@ package com.newer.deal.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -56,9 +57,32 @@ public class ContractController {
 	 * @return
 	 */
 	@PostMapping
-	public Entrust createEntrust(@RequestBody Entrust entrust) {
-		entrustService.found(entrust);
-		return entrust;
+	public boolean createEntrust(@RequestBody Entrust entrust) {
+		
+		return entrustService.found(entrust);
+	}
+	
+	/**
+	 * 快速修改 限额、单价、数量
+	 * @param entrust_id
+	 * @param entrust
+	 * @return
+	 */
+	@PutMapping("/fast/{entrust_id}")
+	public boolean updateEntrust(@PathVariable int entrust_id, @RequestBody Entrust entrust) {
+		entrust.setEntrust_id(entrust_id);
+		return entrustService.updateFast(entrust);
+	}
+	
+	/**
+	 * 删除委托 -- 上架中的委托无法删除 - 返回false
+	 * @param entrust_id
+	 * @return
+	 */
+	@DeleteMapping("/{entrust_id}")
+	public boolean removeEntrust(@PathVariable int entrust_id) {
+		
+		return entrustService.removeEntrust(entrust_id);
 	}
 	
 	/**

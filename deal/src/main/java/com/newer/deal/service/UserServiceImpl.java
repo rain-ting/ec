@@ -73,6 +73,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 
+	// 登录
 	@Override
 	public User login(User user) {
 		return userMapper.register(user);
@@ -85,10 +86,16 @@ public class UserServiceImpl implements UserService {
 		return userMapper.create(user);
 	}
 
-
+	// 充值
 	@Override
 	public boolean topup(int id, User user) {
 		return userMapper.topup(id, new BigDecimal(user.getIdcardno()));
+	}
+
+	// 验证资金密码
+	@Override
+	public Integer checkMoneyPwd(User user) {
+		return userMapper.checkMoneypwd(user);
 	}
 
 }

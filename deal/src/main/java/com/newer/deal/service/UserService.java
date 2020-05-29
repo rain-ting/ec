@@ -30,6 +30,13 @@ public interface UserService {
 	boolean add(User user);
 	
 	/**
+	 * 验证资金密码
+	 * @param user
+	 * @return
+	 */
+	Integer checkMoneyPwd(User user);
+	
+	/**
 	 * 钱包充值
 	 * @param id
 	 * @param user

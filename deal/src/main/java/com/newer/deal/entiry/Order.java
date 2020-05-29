@@ -18,7 +18,7 @@ public class Order {
 	/**
 	 * 定单用户ID
 	 */
-	int user_id;
+	User user;
 	
 	/**
 	 * 销售类型（出售或购买）
@@ -59,7 +59,7 @@ public class Order {
 	/**
 	 * 货币类型
 	 */
-	int currency_id;
+	Currency currency;
 	
 	/**
 	 * 手续费
@@ -69,7 +69,12 @@ public class Order {
 	/**
 	 * 交易的用户对象
 	 */
-	int trading_id;
+	User trading;
+	
+	/**
+	 * 委托编号
+	 */
+	int entrust_id;
 	
 	/**
 	 * 创建时间
@@ -88,12 +93,12 @@ public class Order {
 		this.order_id = order_id;
 	}
 
-	public int getUser_id() {
-		return user_id;
+	public User getUser() {
+		return user;
 	}
 
-	public void setUser_id(int user_id) {
-		this.user_id = user_id;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	public String getSaletype() {
@@ -152,12 +157,12 @@ public class Order {
 		this.dealnumber = dealnumber;
 	}
 
-	public int getCurrency_id() {
-		return currency_id;
+	public Currency getCurrency() {
+		return currency;
 	}
 
-	public void setCurrency_id(int currency_id) {
-		this.currency_id = currency_id;
+	public void setCurrency(Currency currency) {
+		this.currency = currency;
 	}
 
 	public BigDecimal getServicecharge() {
@@ -168,12 +173,20 @@ public class Order {
 		this.servicecharge = servicecharge;
 	}
 
-	public int getTrading_id() {
-		return trading_id;
+	public User getTrading() {
+		return trading;
 	}
 
-	public void setTrading_id(int trading_id) {
-		this.trading_id = trading_id;
+	public void setTrading(User trading) {
+		this.trading = trading;
+	}
+
+	public int getEntrust_id() {
+		return entrust_id;
+	}
+
+	public void setEntrust_id(int entrust_id) {
+		this.entrust_id = entrust_id;
 	}
 
 	public Date getTime() {
@@ -186,11 +199,11 @@ public class Order {
 
 	@Override
 	public String toString() {
-		return "Order [order_id=" + order_id + ", user_id=" + user_id + ", saletype=" + saletype + ", status=" + status
+		return "Order [order_id=" + order_id + ", user=" + user + ", saletype=" + saletype + ", status=" + status
 				+ ", payment_status=" + payment_status + ", currency_status=" + currency_status + ", totalprice="
-				+ totalprice + ", unitprice=" + unitprice + ", dealnumber=" + dealnumber + ", currency_id="
-				+ currency_id + ", servicecharge=" + servicecharge + ", trading_id=" + trading_id + ", time=" + time
-				+ "]";
+				+ totalprice + ", unitprice=" + unitprice + ", dealnumber=" + dealnumber + ", currency=" + currency
+				+ ", servicecharge=" + servicecharge + ", trading=" + trading + ", entrust_id=" + entrust_id + ", time="
+				+ time + "]";
 	}
 
 	

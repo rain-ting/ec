@@ -86,11 +86,12 @@ public class EntrustServiceImpl implements EntrustService {
 			freezeMapper.create(freeze);
 			
 			// 设置冻结编号
-			entrust.setFreeze_id(freeze.getFreeze_id());
+			entrust.setFreeze_id(freeze.getFreeze_id()); // -------
 			
 			// 数据库修改冻结编号
 			entrustMapper.updateFreeze(freeze.getFreeze_id(), entrust_id);
 			
+			// 上架完成  -- 修改状态
 			b = entrustMapper.updateIssue(entrust_id);
 					
 				
@@ -109,12 +110,12 @@ public class EntrustServiceImpl implements EntrustService {
 			freezeMapper.create(freeze);
 			
 			// 设置冻结编号
-			entrust.setFreeze_id(freeze.getFreeze_id());
+			entrust.setFreeze_id(freeze.getFreeze_id()); // ---------
 			
 			// 数据库修改冻结编号
 			entrustMapper.updateFreeze(freeze.getFreeze_id(), entrust_id);
 		
-			// 上架完成
+			// 上架完成  -- 修改状态
 			b = entrustMapper.updateIssue(entrust_id);
 				
 			
@@ -162,7 +163,7 @@ public class EntrustServiceImpl implements EntrustService {
 		entrustMapper.updateFreeze(0, entrust_id);
 		
 		
-		// 下架成功
+		// 下架成功 -- 修改状态
 		b = entrustMapper.updateSoldOut(entrust_id);
 			
 
@@ -170,20 +171,43 @@ public class EntrustServiceImpl implements EntrustService {
 		return b;
 	}
 
+	// 查看所有已经上架的委托（广告）
 	@Override
 	public List<Entrust> findAll() {
 		return entrustMapper.findByStatusOnIssue();
 	}
 
+	// 根据用户编号查看委托
 	@Override
 	public List<Entrust> lookAll(int user_id) {
 		return entrustMapper.loadByUserId(user_id);
 	}
 
+	//创建委托
 	@Override
-	public void found(Entrust entrust) {
+	public boolean found(Entrust entrust) {
 		
-		entrustMapper.create(entrust);
+		return entrustMapper.create(entrust);
+	}
+
+	@Override
+	public boolean updateFast(Entrust entrust) {
+		return entrustMapper.updateFast(entrust);
+	}
+
+	@Override
+	public boolean removeEntrust(int entrust_id) {
+		
+		Entrust entrust = entrustMapper.loadByEntrustId(entrust_id);
+		
+		boolean b = false;
+		
+		if (!(entrust.getFreeze_id()>0)) {
+			b = entrustMapper.remove(entrust_id);
+		}
+		
+		
+		return b;
 	}
 
 }

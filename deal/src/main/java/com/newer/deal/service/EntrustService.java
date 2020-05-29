@@ -46,5 +46,21 @@ public interface EntrustService {
 	 * @param entrust
 	 * @return
 	 */
-	void found(Entrust entrust);
+	boolean found(Entrust entrust);
+	
+	/**
+	 * 快速修改 限额、单价、数量
+	 * @param entrust
+	 * @return
+	 */
+	boolean updateFast(Entrust entrust);
+	
+	/**
+	 * 删除委托
+	 * @param entrust_id
+	 * @return
+	 */
+	boolean removeEntrust(int entrust_id);
+	
+	
 }

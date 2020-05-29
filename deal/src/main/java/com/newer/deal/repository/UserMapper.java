@@ -40,6 +40,14 @@ public interface UserMapper {
 	User register(User user);
 	
 	/**
+	 * 根据用户id 检验资金密码
+	 * @param user_id
+	 * @return
+	 */
+	@Select("select moneypwd=#{moneypwd} as p from user where user_id=#{user_id}")
+	Integer checkMoneypwd(User user);
+	
+	/**
 	 * 创建用户
 	 * @param user
 	 * @return
@@ -54,6 +62,17 @@ public interface UserMapper {
 	 */
 	@Update("update user set e_mail=#{e_mail},realname=#{realname},idcardno=#{idcardno},moneypwd=#{moneypwd} where user_id=#{user_id}")
 	boolean save(User user);
+	
+	
+	/**
+	 * 更改账户余额
+	 * @param id 用户 id
+	 * @param rmb 金额，正为转入，负为转出
+	 * @return
+	 */
+	@Update("update user set RMB=RMB+#{rmb} where user_id=#{id}")
+	boolean transfer(int id, BigDecimal rmb);
+	
 	
 	/**
 	 * 钱包充值

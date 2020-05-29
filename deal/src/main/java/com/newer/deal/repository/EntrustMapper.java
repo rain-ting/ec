@@ -2,6 +2,7 @@ package com.newer.deal.repository;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.One;
@@ -11,6 +12,8 @@ import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.UpdateProvider;
+import org.apache.ibatis.jdbc.SQL;
 import org.apache.ibatis.type.JdbcType;
 
 import com.newer.deal.entiry.Currency;
@@ -64,7 +67,24 @@ public interface EntrustMapper {
 	 */
 	@Insert("insert into entrust(theme,user_id,saletype,currency_id,deal_max,price,price_min,price_max) values(#{theme},#{user.user_id},#{saletype},#{currency.id},#{deal_max},#{price},#{price_min},#{price_max})")
 	@Options(useGeneratedKeys = true, keyProperty = "entrust_id")
-	void create(Entrust entrust);
+	boolean create(Entrust entrust);
+	
+	/**
+	 * 根据委托 id ,快速修改 限额 、 单价、 数量
+	 * @param entrust
+	 * @return
+	 */
+//	@Update("update entrust set price_min=#{price_min},price_max=#{price_max},price=#{price},deal_max=#{deal_max} where entrust_id=#{entrust_id}")
+	@UpdateProvider(type = SQLProvider.class, method = "updateDSQL")
+	boolean updateFast(Entrust entrust);
+	
+	/**
+	 * 根据委托 id 删除委托
+	 * @param entrust_id
+	 * @return
+	 */
+	@Delete("delete from entrust where entrust_id=#{entrust_id}")
+	boolean remove(int entrust_id);
 	
 	/**
 	 * 用户将委托上架
@@ -90,4 +110,37 @@ public interface EntrustMapper {
 	 */
 	@Update("update entrust set freeze_id=#{freeze_id} where entrust_id=#{entrust_id}")
 	boolean updateFreeze(int freeze_id, int entrust_id);
+	
+	// 动态sql语句生产类
+	static class SQLProvider {
+		
+		// 动态修改  -- 根据委托 id ,快速修改 限额 、 单价、 数量
+		public String updateDSQL(Entrust entrust) {
+			return new SQL() {{
+				
+				if (entrust!=null) {
+					UPDATE("entrust");
+					System.out.println(entrust);
+					if (entrust.getPrice_min()!=null&&entrust.getPrice_min().doubleValue()>0) {
+			// @Update("update entrust set price_min=#{price_min},price_max=#{price_max},price=#{price},deal_max=#{deal_max} where entrust_id=#{entrust_id}")
+						SET("price_min=#{price_min}");
+					}
+					if (entrust.getPrice_max()!=null&&entrust.getPrice_max().doubleValue()>0) {
+						SET("price_max=#{price_max}");
+					}
+					if (entrust.getPrice()!=null&&entrust.getPrice().doubleValue()>0) {
+						SET("price=#{price}");
+					}
+					if (entrust.getDeal_max()!=null&&entrust.getDeal_max().doubleValue()>0) {
+						SET("deal_max=#{deal_max}");
+					}
+					
+					WHERE("entrust_id=#{entrust_id}");
+					
+				}
+				
+				
+			}} .toString();
+		}
+	}
 }
